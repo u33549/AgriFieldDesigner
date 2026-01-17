@@ -46,37 +46,80 @@ function initThreeJS() {
     // Handle window resize
     window.addEventListener('resize', onWindowResize);
     
-    // Simple orbit controls (mouse drag)
+    // Camera controls
     let isDragging = false;
+    let isPanning = false;
     let previousMousePosition = { x: 0, y: 0 };
+    let cameraTarget = new THREE.Vector3(0, 0, 0);
     
     viewer.addEventListener('mousedown', (e) => {
-        isDragging = true;
+        if (e.button === 0 && e.shiftKey) { // Left click + Shift = Pan
+            isPanning = true;
+        } else if (e.button === 0) { // Left click = Rotate
+            isDragging = true;
+        } else if (e.button === 2) { // Right click = Pan
+            isPanning = true;
+            e.preventDefault();
+        }
         previousMousePosition = { x: e.clientX, y: e.clientY };
     });
     
+    viewer.addEventListener('contextmenu', (e) => {
+        e.preventDefault(); // Disable right-click menu
+    });
+    
     viewer.addEventListener('mousemove', (e) => {
+        const deltaX = e.clientX - previousMousePosition.x;
+        const deltaY = e.clientY - previousMousePosition.y;
+        
         if (isDragging) {
-            const deltaX = e.clientX - previousMousePosition.x;
-            const deltaY = e.clientY - previousMousePosition.y;
-            
+            // Rotate camera around target
             const rotationSpeed = 0.005;
-            camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), -deltaX * rotationSpeed);
             
-            previousMousePosition = { x: e.clientX, y: e.clientY };
-            camera.lookAt(0, 0, 0);
+            // Horizontal rotation
+            const angle = -deltaX * rotationSpeed;
+            const offset = camera.position.clone().sub(cameraTarget);
+            offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), angle);
+            camera.position.copy(cameraTarget).add(offset);
+            
+            // Vertical rotation
+            const phi = -deltaY * rotationSpeed;
+            const axis = new THREE.Vector3().crossVectors(camera.up, offset).normalize();
+            offset.applyAxisAngle(axis, phi);
+            camera.position.copy(cameraTarget).add(offset);
+            
+            camera.lookAt(cameraTarget);
+        } else if (isPanning) {
+            // Pan camera
+            const panSpeed = 0.15;
+            const distance = camera.position.distanceTo(cameraTarget);
+            
+            const right = new THREE.Vector3();
+            right.crossVectors(camera.up, camera.getWorldDirection(new THREE.Vector3())).normalize();
+            
+            const panX = right.multiplyScalar(-deltaX * panSpeed * distance * 0.01);
+            const panY = camera.up.clone().multiplyScalar(deltaY * panSpeed * distance * 0.01);
+            
+            camera.position.add(panX).add(panY);
+            cameraTarget.add(panX).add(panY);
         }
+        
+        previousMousePosition = { x: e.clientX, y: e.clientY };
     });
     
     viewer.addEventListener('mouseup', () => {
         isDragging = false;
+        isPanning = false;
     });
     
     viewer.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const zoomSpeed = 0.1;
-        const direction = camera.position.clone().normalize();
-        camera.position.addScaledVector(direction, e.deltaY * zoomSpeed * -0.01);
+        const zoomSpeed = 0.5;
+        const direction = camera.position.clone().sub(cameraTarget).normalize();
+        const distance = camera.position.distanceTo(cameraTarget);
+        const delta = e.deltaY * zoomSpeed * -0.01 * distance;
+        
+        camera.position.addScaledVector(direction, delta);
     });
     
     animate();
@@ -237,12 +280,12 @@ function copyToClipboard() {
 document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('zoomIn').addEventListener('click', () => {
-    const distance = camera.position.length();
-    camera.position.multiplyScalar(0.8);
+    const direction = camera.position.clone().sub(cameraTarget).normalize();
+    camera.position.addScaledVector(direction, -1);
 });
 document.getElementById('zoomOut').addEventListener('click', () => {
-    const distance = camera.position.length();
-    camera.position.multiplyScalar(1.2);
+    const direction = camera.position.clone().sub(cameraTarget).normalize();
+    camera.position.addScaledVector(direction, 1);
 });
 
 // Auto-generate on input change
