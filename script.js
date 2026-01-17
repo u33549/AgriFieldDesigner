@@ -114,7 +114,7 @@ function initThreeJS() {
     
     viewer.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const zoomSpeed = 0.5;
+        const zoomSpeed = 0.2;
         const direction = camera.position.clone().sub(cameraTarget).normalize();
         const distance = camera.position.distanceTo(cameraTarget);
         const delta = e.deltaY * zoomSpeed * -0.01 * distance;
