@@ -31,9 +31,42 @@ body {
 
 .panel h1 {
     color: #f25835;
-    margin-bottom: 10px;
+    margin: 0;
     font-size: 20px;
-    text-align: center;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.btn-lang {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border: 2px solid #202d48;
+    border-radius: 4px;
+    background: white;
+    color: #202d48;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.btn-lang svg {
+    width: 18px;
+    height: 12px;
+}
+
+.btn-lang:hover {
+    background: #202d48;
+    color: white;
+    transform: scale(1.05);
 }
 
 .panel h3 {

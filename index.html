@@ -9,35 +9,57 @@
 <body>
     <div class="container">
         <div class="panel">
-            <h1>🌾 Agri Field Designer</h1>
+            <div class="header-row">
+                <h1>🌾 <span data-lang="title">Agri Field Designer</span></h1>
+                <button id="langBtn" class="btn-lang">
+                    <svg id="flagIcon" width="20" height="14" viewBox="0 0 60 40">
+                        <!-- UK Flag -->
+                        <g id="ukFlag">
+                            <rect width="60" height="40" fill="#012169"/>
+                            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
+                            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
+                            <path d="M30,0 L30,40 M0,20 L60,20" stroke="#fff" stroke-width="13"/>
+                            <path d="M30,0 L30,40 M0,20 L60,20" stroke="#C8102E" stroke-width="8"/>
+                        </g>
+                        <!-- TR Flag -->
+                        <g id="trFlag" style="display:none;">
+                            <rect width="60" height="40" fill="#E30A17"/>
+                            <circle cx="23" cy="20" r="9" fill="#fff"/>
+                            <circle cx="26" cy="20" r="7.5" fill="#E30A17"/>
+                            <path d="M32,20 L35,17 L33,20.5 L35,23 L32,21 L29,23 L31,20.5 L29,17 Z" fill="#fff"/>
+                        </g>
+                    </svg>
+                    <span id="langText">EN</span>
+                </button>
+            </div>
             
             <div class="form-group">
-                <label>Model URI:</label>
+                <label data-lang="modelUri">Model URI:</label>
                 <input type="text" id="modelUri" value="model://big_plant" placeholder="model://big_plant">
             </div>
 
             <div class="form-group">
-                <label>Model Adı:</label>
+                <label data-lang="modelName">Model Name:</label>
                 <input type="text" id="modelName" value="big_plant" placeholder="big_plant">
             </div>
 
-            <h3>Model Boyutları</h3>
+            <h3 data-lang="modelSize">Model Size</h3>
             <div class="coord-group">
                 <div class="coord-input">
-                    <label>Genişlik:</label>
+                    <label data-lang="width">Width:</label>
                     <input type="number" id="sizeX" value="0.3" step="0.1" min="0.1">
                 </div>
                 <div class="coord-input">
-                    <label>Yükseklik:</label>
+                    <label data-lang="height">Height:</label>
                     <input type="number" id="sizeY" value="0.3" step="0.1" min="0.1">
                 </div>
                 <div class="coord-input">
-                    <label>Derinlik:</label>
+                    <label data-lang="depth">Depth:</label>
                     <input type="number" id="sizeZ" value="0.3" step="0.1" min="0.1">
                 </div>
             </div>
 
-            <h3>Başlangıç Konumu</h3>
+            <h3 data-lang="startPos">Start Position</h3>
             <div class="coord-group">
                 <div class="coord-input">
                     <label>X:</label>
@@ -53,7 +75,7 @@
                 </div>
             </div>
 
-            <h3>Tekrar Miktarı</h3>
+            <h3 data-lang="repeatCount">Repeat Count</h3>
             <div class="coord-group">
                 <div class="coord-input">
                     <label>X:</label>
@@ -69,7 +91,7 @@
                 </div>
             </div>
 
-            <h3>Mesafe (Aralık)</h3>
+            <h3 data-lang="distance">Distance (Gap)</h3>
             <div class="coord-group">
                 <div class="coord-input">
                     <label>X:</label>
@@ -85,7 +107,7 @@
                 </div>
             </div>
 
-            <h3>Sapma Payı (Rastgele)</h3>
+            <h3 data-lang="deviation">Deviation (Random)</h3>
             <div class="coord-group">
                 <div class="coord-input">
                     <label>X:</label>
@@ -101,7 +123,7 @@
                 </div>
             </div>
 
-            <h3>Rotasyon Sapması (°)</h3>
+            <h3 data-lang="rotation">Rotation Deviation (°)</h3>
             <div class="coord-group">
                 <div class="coord-input">
                     <label>Roll:</label>
@@ -117,26 +139,26 @@
                 </div>
             </div>
 
-            <button id="regenerateBtn" class="btn-regenerate">🔄 Yeniden Oluştur</button>
+            <button id="regenerateBtn" class="btn-regenerate">🔄 <span data-lang="regenerate">Regenerate</span></button>
             
             <div class="stats">
-                <span id="totalCount">Toplam: 0 model</span>
+                <span id="totalCount" data-lang="total">Total: 0 models</span>
             </div>
         </div>
 
         <div id="viewer">
             <div class="controls-tutorial">
-                <div class="control-item">🖱️ Sol Tık: Döndür</div>
-                <div class="control-item">⚙️ Shift + Sol Tık: Kaydır</div>
-                <div class="control-item">🖱️ Sağ Tık: Kaydır</div>
-                <div class="control-item">🔍 Scroll: Zoom</div>
+                <div class="control-item" data-lang="ctrlRotate">🖱️ Left Click: Rotate</div>
+                <div class="control-item" data-lang="ctrlPanShift">⚙️ Shift + Left Click: Pan</div>
+                <div class="control-item" data-lang="ctrlPanRight">🖱️ Right Click: Pan</div>
+                <div class="control-item" data-lang="ctrlZoom">🔍 Scroll: Zoom</div>
             </div>
         </div>
         
         <div class="output">
             <div class="output-header">
-                <h3>XML Çıktısı:</h3>
-                <button id="copyBtn" class="btn-copy-output">📋 Kopyala</button>
+                <h3 data-lang="xmlOutput">XML Output:</h3>
+                <button id="copyBtn" class="btn-copy-output">📋 <span data-lang="copy">Copy</span></button>
             </div>
             <pre id="output"></pre>
             </div>

@@ -1,3 +1,88 @@
+// Language System
+const translations = {
+    en: {
+        title: 'Agri Field Designer',
+        modelUri: 'Model URI:',
+        modelName: 'Model Name:',
+        modelSize: 'Model Size',
+        width: 'Width:',
+        height: 'Height:',
+        depth: 'Depth:',
+        startPos: 'Start Position',
+        repeatCount: 'Repeat Count',
+        distance: 'Distance (Gap)',
+        deviation: 'Deviation (Random)',
+        rotation: 'Rotation Deviation (°)',
+        regenerate: 'Regenerate',
+        total: 'Total: {count} models',
+        xmlOutput: 'XML Output:',
+        copy: 'Copy',
+        copied: 'Copied!',
+        ctrlRotate: '🖱️ Left Click: Rotate',
+        ctrlPanShift: '⚙️ Shift + Left Click: Pan',
+        ctrlPanRight: '🖱️ Right Click: Pan',
+        ctrlZoom: '🔍 Scroll: Zoom'
+    },
+    tr: {
+        title: 'Tarım Alanı Tasarımcısı',
+        modelUri: 'Model URI:',
+        modelName: 'Model Adı:',
+        modelSize: 'Model Boyutları',
+        width: 'Genişlik:',
+        height: 'Yükseklik:',
+        depth: 'Derinlik:',
+        startPos: 'Başlangıç Konumu',
+        repeatCount: 'Tekrar Miktarı',
+        distance: 'Mesafe (Aralık)',
+        deviation: 'Sapma Payı (Rastgele)',
+        rotation: 'Rotasyon Sapması (°)',
+        regenerate: 'Yeniden Oluştur',
+        total: 'Toplam: {count} model',
+        xmlOutput: 'XML Çıktısı:',
+        copy: 'Kopyala',
+        copied: 'Kopyalandı!',
+        ctrlRotate: '🖱️ Sol Tık: Döndür',
+        ctrlPanShift: '⚙️ Shift + Sol Tık: Kaydır',
+        ctrlPanRight: '🖱️ Sağ Tık: Kaydır',
+        ctrlZoom: '🔍 Scroll: Zoom'
+    }
+};
+
+let currentLang = 'en';
+
+function setLanguage(lang) {
+    currentLang = lang;
+    const langText = document.getElementById('langText');
+    const ukFlag = document.getElementById('ukFlag');
+    const trFlag = document.getElementById('trFlag');
+    
+    if (lang === 'en') {
+        langText.textContent = 'EN';
+        ukFlag.style.display = 'block';
+        trFlag.style.display = 'none';
+    } else {
+        langText.textContent = 'TR';
+        ukFlag.style.display = 'none';
+        trFlag.style.display = 'block';
+    }
+    
+    // Update all elements with data-lang attribute
+    document.querySelectorAll('[data-lang]').forEach(element => {
+        const key = element.getAttribute('data-lang');
+        if (translations[lang][key]) {
+            if (element.id === 'totalCount') {
+                // Keep the count number
+                const count = document.getElementById('totalCount').textContent.match(/\d+/);
+                element.textContent = translations[lang][key].replace('{count}', count || '0');
+            } else {
+                element.textContent = translations[lang][key];
+            }
+        }
+    });
+    
+    localStorage.setItem('agriFieldLang', lang);
+}
+
 // Three.js Scene Setup
 let scene, camera, renderer, controls;
 let models = [];
@@ -252,19 +337,20 @@ function generateXML() {
     
     // Update stats
     const totalCount = repeatX * repeatY * repeatZ;
-    document.getElementById('totalCount').textContent = `Toplam: ${totalCount} model`;
+    const totalText = translations[currentLang].total.replace('{count}', totalCount);
+    document.getElementById('totalCount').textContent = totalText;
 }
 
 function copyToClipboard() {
     const output = document.getElementById('output').textContent;
     navigator.clipboard.writeText(output).then(() => {
         const btn = document.getElementById('copyBtn');
-        const originalText = btn.textContent;
-        btn.textContent = '✅ Kopyalandı!';
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ ' + translations[currentLang].copied;
         btn.style.background = '#4caf50';
         
         setTimeout(() => {
-            btn.textContent = originalText;
+            btn.innerHTML = originalText;
             btn.style.background = '';
         }, 2000);
     }).catch(err => {
@@ -273,6 +359,9 @@ function copyToClipboard() {
 }
 
 // Event Listeners
+document.getElementById('langBtn').addEventListener('click', () => {
+    setLanguage(currentLang === 'en' ? 'tr' : 'en');
+});
 document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 
@@ -284,6 +373,10 @@ inputs.forEach(input => {
 
 // Initialize
 window.addEventListener('load', () => {
+    // Load saved language or default to English
+    const savedLang = localStorage.getItem('agriFieldLang') || 'en';
+    setLanguage(savedLang);
+    
     initThreeJS();
     generateXML();
 });
