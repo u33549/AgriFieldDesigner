@@ -152,6 +152,9 @@ function generateXML() {
     const distanceX = parseFloat(document.getElementById('distanceX').value);
     const distanceY = parseFloat(document.getElementById('distanceY').value);
     const distanceZ = parseFloat(document.getElementById('distanceZ').value);
+    const deviationX = parseFloat(document.getElementById('deviationX').value);
+    const deviationY = parseFloat(document.getElementById('deviationY').value);
+    const deviationZ = parseFloat(document.getElementById('deviationZ').value);
     
     let xml = '';
     let counter = 1;
@@ -163,9 +166,14 @@ function generateXML() {
     for (let iz = 0; iz < repeatZ; iz++) {
         for (let iy = 0; iy < repeatY; iy++) {
             for (let ix = 0; ix < repeatX; ix++) {
-                const x = startX + (ix * distanceX);
-                const y = startY + (iy * distanceY);
-                const z = startZ + (iz * distanceZ);
+                // Add random deviation
+                const devX = deviationX > 0 ? (Math.random() - 0.5) * 2 * deviationX : 0;
+                const devY = deviationY > 0 ? (Math.random() - 0.5) * 2 * deviationY : 0;
+                const devZ = deviationZ > 0 ? (Math.random() - 0.5) * 2 * deviationZ : 0;
+                
+                const x = startX + (ix * distanceX) + devX;
+                const y = startY + (iy * distanceY) + devY;
+                const z = startZ + (iz * distanceZ) + devZ;
                 
                 const name = `${modelName}_${String(counter).padStart(2, '0')}`;
                 
@@ -219,6 +227,14 @@ function copyToClipboard() {
 // Event Listeners
 document.getElementById('generateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+document.getElementById('zoomIn').addEventListener('click', () => {
+    const distance = camera.position.length();
+    camera.position.multiplyScalar(0.8);
+});
+document.getElementById('zoomOut').addEventListener('click', () => {
+    const distance = camera.position.length();
+    camera.position.multiplyScalar(1.2);
+});
 
 // Auto-generate on input change
 const inputs = document.querySelectorAll('input');

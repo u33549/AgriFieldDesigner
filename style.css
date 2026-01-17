@@ -152,6 +152,43 @@ body {
     overflow: hidden;
 }
 
+.zoom-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10;
+}
+
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background: #202d48;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-btn:hover {
+    background: #f25835;
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(242, 88, 53, 0.4);
+}
+
+.zoom-btn:active {
+    transform: scale(0.95);
+}
+
 #viewer canvas {
     display: block;
     width: 100%;

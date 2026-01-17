@@ -25,15 +25,15 @@
             <div class="coord-group">
                 <div class="coord-input">
                     <label>Genişlik:</label>
-                    <input type="number" id="sizeX" value="0.5" step="0.1" min="0.1">
+                    <input type="number" id="sizeX" value="0.3" step="0.1" min="0.1">
                 </div>
                 <div class="coord-input">
                     <label>Yükseklik:</label>
-                    <input type="number" id="sizeY" value="1" step="0.1" min="0.1">
+                    <input type="number" id="sizeY" value="0.3" step="0.1" min="0.1">
                 </div>
                 <div class="coord-input">
                     <label>Derinlik:</label>
-                    <input type="number" id="sizeZ" value="0.5" step="0.1" min="0.1">
+                    <input type="number" id="sizeZ" value="0.3" step="0.1" min="0.1">
                 </div>
             </div>
 
@@ -85,6 +85,22 @@
                 </div>
             </div>
 
+            <h3>Sapma Payı (Rastgele)</h3>
+            <div class="coord-group">
+                <div class="coord-input">
+                    <label>X:</label>
+                    <input type="number" id="deviationX" value="0" step="0.1" min="0">
+                </div>
+                <div class="coord-input">
+                    <label>Y:</label>
+                    <input type="number" id="deviationY" value="0" step="0.1" min="0">
+                </div>
+                <div class="coord-input">
+                    <label>Z:</label>
+                    <input type="number" id="deviationZ" value="0" step="0.1" min="0">
+                </div>
+            </div>
+
             <button id="generateBtn" class="btn-generate">🚀 Oluştur</button>
             <button id="copyBtn" class="btn-copy">📋 Kopyala</button>
             
@@ -93,7 +109,12 @@
             </div>
         </div>
 
-        <div id="viewer"></div>
+        <div id="viewer">
+            <div class="zoom-controls">
+                <button id="zoomIn" class="zoom-btn">+</button>
+                <button id="zoomOut" class="zoom-btn">-</button>
+            </div>
+        </div>
         
         <div class="output">
             <h3>XML Çıktısı:</h3>
