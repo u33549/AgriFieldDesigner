@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Field Designer - Model Creator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="panel">
+            <h1>🌾 Agri Field Designer</h1>
+            
+            <div class="form-group">
+                <label>Model URI:</label>
+                <input type="text" id="modelUri" value="model://big_plant" placeholder="model://big_plant">
+            </div>
+
+            <div class="form-group">
+                <label>Model Adı:</label>
+                <input type="text" id="modelName" value="big_plant" placeholder="big_plant">
+            </div>
+
+            <h3>Model Boyutları</h3>
+            <div class="coord-group">
+                <div class="coord-input">
+                    <label>Genişlik:</label>
+                    <input type="number" id="sizeX" value="0.5" step="0.1" min="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Yükseklik:</label>
+                    <input type="number" id="sizeY" value="1" step="0.1" min="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Derinlik:</label>
+                    <input type="number" id="sizeZ" value="0.5" step="0.1" min="0.1">
+                </div>
+            </div>
+
+            <h3>Başlangıç Konumu</h3>
+            <div class="coord-group">
+                <div class="coord-input">
+                    <label>X:</label>
+                    <input type="number" id="startX" value="0" step="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Y:</label>
+                    <input type="number" id="startY" value="0" step="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Z:</label>
+                    <input type="number" id="startZ" value="0" step="0.1">
+                </div>
+            </div>
+
+            <h3>Tekrar Miktarı</h3>
+            <div class="coord-group">
+                <div class="coord-input">
+                    <label>X:</label>
+                    <input type="number" id="repeatX" value="3" min="1">
+                </div>
+                <div class="coord-input">
+                    <label>Y:</label>
+                    <input type="number" id="repeatY" value="3" min="1">
+                </div>
+                <div class="coord-input">
+                    <label>Z:</label>
+                    <input type="number" id="repeatZ" value="1" min="1">
+                </div>
+            </div>
+
+            <h3>Mesafe (Aralık)</h3>
+            <div class="coord-group">
+                <div class="coord-input">
+                    <label>X:</label>
+                    <input type="number" id="distanceX" value="2" step="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Y:</label>
+                    <input type="number" id="distanceY" value="2" step="0.1">
+                </div>
+                <div class="coord-input">
+                    <label>Z:</label>
+                    <input type="number" id="distanceZ" value="0" step="0.1">
+                </div>
+            </div>
+
+            <button id="generateBtn" class="btn-generate">🚀 Oluştur</button>
+            <button id="copyBtn" class="btn-copy">📋 Kopyala</button>
+            
+            <div class="stats">
+                <span id="totalCount">Toplam: 0 model</span>
+            </div>
+        </div>
+
+        <div class="preview">
+            <div id="viewer"></div>
+            <div class="output">
+                <h3>XML Çıktısı:</h3>
+                <pre id="output"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
