@@ -234,7 +234,6 @@ function copyToClipboard() {
 }
 
 // Event Listeners
-document.getElementById('generateBtn').addEventListener('click', generateXML);
 document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('zoomIn').addEventListener('click', () => {

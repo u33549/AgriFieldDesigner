@@ -226,6 +226,40 @@ body {
     font-size: 18px;
 }
 
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.output-header h3 {
+    margin: 0;
+}
+
+.btn-copy-output {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #f25835;
+    color: white;
+    white-space: nowrap;
+}
+
+.btn-copy-output:hover {
+    background: #d94d2d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(242, 88, 53, 0.4);
+}
+
+.btn-copy-output:active {
+    transform: translateY(0);
+}
+
 .output pre {
     flex: 1;
     background: #1e1e1e;

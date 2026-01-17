@@ -117,9 +117,7 @@
                 </div>
             </div>
 
-            <button id="generateBtn" class="btn-generate">🚀 Oluştur</button>
             <button id="regenerateBtn" class="btn-regenerate">🔄 Yeniden Oluştur</button>
-            <button id="copyBtn" class="btn-copy">📋 Kopyala</button>
             
             <div class="stats">
                 <span id="totalCount">Toplam: 0 model</span>
@@ -134,7 +132,10 @@
         </div>
         
         <div class="output">
-            <h3>XML Çıktısı:</h3>
+            <div class="output-header">
+                <h3>XML Çıktısı:</h3>
+                <button id="copyBtn" class="btn-copy-output">📋 Kopyala</button>
+            </div>
             <pre id="output"></pre>
             </div>
         </div>
