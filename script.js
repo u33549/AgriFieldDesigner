@@ -253,10 +253,6 @@ function generateXML() {
     // Update stats
     const totalCount = repeatX * repeatY * repeatZ;
     document.getElementById('totalCount').textContent = `Toplam: ${totalCount} model`;
-    
-    // Reset camera to default position
-    camera.position.set(-2, 5, 5);
-    camera.lookAt(0, 0, 0);
 }
 
 function copyToClipboard() {
@@ -281,11 +277,13 @@ document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('zoomIn').addEventListener('click', () => {
     const direction = camera.position.clone().sub(cameraTarget).normalize();
-    camera.position.addScaledVector(direction, -1);
+    const distance = camera.position.distanceTo(cameraTarget);
+    camera.position.addScaledVector(direction, -distance * 0.2);
 });
 document.getElementById('zoomOut').addEventListener('click', () => {
     const direction = camera.position.clone().sub(cameraTarget).normalize();
-    camera.position.addScaledVector(direction, 1);
+    const distance = camera.position.distanceTo(cameraTarget);
+    camera.position.addScaledVector(direction, distance * 0.2);
 });
 
 // Auto-generate on input change
