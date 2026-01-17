@@ -101,16 +101,16 @@ function clearModels() {
     models = [];
 }
 
-function createModel(x, y, z, index) {
+function createModel(x, y, z, index, sizeX, sizeY, sizeZ) {
     // Create a simple cube to represent the model
-    const geometry = new THREE.BoxGeometry(0.5, 1, 0.5);
+    const geometry = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
     const material = new THREE.MeshPhongMaterial({
-        color: 0x4caf50,
-        emissive: 0x2e7d32,
+        color: 0xf25835,
+        emissive: 0x202d48,
         shininess: 30
     });
     const cube = new THREE.Mesh(geometry, material);
-    cube.position.set(x, y + 0.5, z); // Offset Y so base is at y
+    cube.position.set(x, y + (sizeY / 2), z); // Offset Y so base is at y
     cube.castShadow = true;
     cube.receiveShadow = true;
     
@@ -122,14 +122,14 @@ function createModel(x, y, z, index) {
     context.fillStyle = '#ffffff';
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.font = 'Bold 24px Arial';
-    context.fillStyle = '#667eea';
+    context.fillStyle = '#202d48';
     context.textAlign = 'center';
     context.fillText(`#${index}`, canvas.width / 2, canvas.height / 2 + 8);
     
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.set(x, y + 2, z);
+    sprite.position.set(x, y + sizeY + 0.5, z);
     sprite.scale.set(1, 0.25, 1);
     
     scene.add(cube);
@@ -140,6 +140,9 @@ function createModel(x, y, z, index) {
 function generateXML() {
     const modelUri = document.getElementById('modelUri').value;
     const modelName = document.getElementById('modelName').value;
+    const sizeX = parseFloat(document.getElementById('sizeX').value);
+    const sizeY = parseFloat(document.getElementById('sizeY').value);
+    const sizeZ = parseFloat(document.getElementById('sizeZ').value);
     const startX = parseFloat(document.getElementById('startX').value);
     const startY = parseFloat(document.getElementById('startY').value);
     const startZ = parseFloat(document.getElementById('startZ').value);
@@ -177,7 +180,7 @@ function generateXML() {
                 }
                 
                 // Add visual model in Three.js
-                createModel(x, z, -y, counter); // Note: swapping y and z for Three.js coordinate system
+                createModel(x, z, -y, counter, sizeX, sizeY, sizeZ); // Note: swapping y and z for Three.js coordinate system
                 
                 counter++;
             }
@@ -191,24 +194,9 @@ function generateXML() {
     const totalCount = repeatX * repeatY * repeatZ;
     document.getElementById('totalCount').textContent = `Toplam: ${totalCount} model`;
     
-    // Adjust camera to see all models
-    const centerX = startX + (distanceX * (repeatX - 1)) / 2;
-    const centerY = startZ + (distanceZ * (repeatZ - 1)) / 2;
-    const centerZ = -startY - (distanceY * (repeatY - 1)) / 2;
-    
-    const maxDistance = Math.max(
-        distanceX * repeatX,
-        distanceY * repeatY,
-        distanceZ * repeatZ
-    );
-    
-    const cameraDistance = Math.max(maxDistance * 1.5, 10);
-    camera.position.set(
-        centerX + cameraDistance,
-        cameraDistance,
-        centerZ + cameraDistance
-    );
-    camera.lookAt(centerX, 0, centerZ);
+    // Reset camera to default position
+    camera.position.set(-2, 5, 5);
+    camera.lookAt(0, 0, 0);
 }
 
 function copyToClipboard() {

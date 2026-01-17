@@ -13,9 +13,9 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 400px 1fr 1fr;
     gap: 20px;
-    max-width: 1600px;
+    max-width: 1800px;
     margin: 0 auto;
     height: calc(100vh - 40px);
 }
@@ -144,20 +144,12 @@ body {
     color: #202d48;
 }
 
-.preview {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 #viewer {
     background: white;
     border-radius: 16px;
-    width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
-    flex-shrink: 0;
 }
 
 #viewer canvas {
@@ -172,7 +164,6 @@ body {
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    height: 50%;
     display: flex;
     flex-direction: column;
 }
