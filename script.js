@@ -275,16 +275,6 @@ function copyToClipboard() {
 // Event Listeners
 document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-document.getElementById('zoomIn').addEventListener('click', () => {
-    const direction = camera.position.clone().sub(cameraTarget).normalize();
-    const distance = camera.position.distanceTo(cameraTarget);
-    camera.position.addScaledVector(direction, -distance * 0.2);
-});
-document.getElementById('zoomOut').addEventListener('click', () => {
-    const direction = camera.position.clone().sub(cameraTarget).normalize();
-    const distance = camera.position.distanceTo(cameraTarget);
-    camera.position.addScaledVector(direction, distance * 0.2);
-});
 
 // Auto-generate on input change
 const inputs = document.querySelectorAll('input');
