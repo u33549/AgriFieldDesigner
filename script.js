@@ -101,7 +101,7 @@ function clearModels() {
     models = [];
 }
 
-function createModel(x, y, z, index, sizeX, sizeY, sizeZ) {
+function createModel(x, y, z, index, sizeX, sizeY, sizeZ, rotX, rotY, rotZ) {
     // Create a simple cube to represent the model
     const geometry = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
     const material = new THREE.MeshPhongMaterial({
@@ -111,6 +111,7 @@ function createModel(x, y, z, index, sizeX, sizeY, sizeZ) {
     });
     const cube = new THREE.Mesh(geometry, material);
     cube.position.set(x, y + (sizeY / 2), z); // Offset Y so base is at y
+    cube.rotation.set(rotX, rotY, rotZ); // Apply rotation
     cube.castShadow = true;
     cube.receiveShadow = true;
     
@@ -155,6 +156,9 @@ function generateXML() {
     const deviationX = parseFloat(document.getElementById('deviationX').value);
     const deviationY = parseFloat(document.getElementById('deviationY').value);
     const deviationZ = parseFloat(document.getElementById('deviationZ').value);
+    const rotationRoll = parseFloat(document.getElementById('rotationRoll').value);
+    const rotationPitch = parseFloat(document.getElementById('rotationPitch').value);
+    const rotationYaw = parseFloat(document.getElementById('rotationYaw').value);
     
     let xml = '';
     let counter = 1;
@@ -175,12 +179,17 @@ function generateXML() {
                 const y = startY + (iy * distanceY) + devY;
                 const z = startZ + (iz * distanceZ) + devZ;
                 
+                // Add random rotation deviation (convert to radians)
+                const roll = rotationRoll > 0 ? (Math.random() * rotationRoll * Math.PI / 180) : 0;
+                const pitch = rotationPitch > 0 ? (Math.random() * rotationPitch * Math.PI / 180) : 0;
+                const yaw = rotationYaw > 0 ? (Math.random() * rotationYaw * Math.PI / 180) : 0;
+                
                 const name = `${modelName}_${String(counter).padStart(2, '0')}`;
                 
                 xml += `<include>\n`;
                 xml += `  <uri>${modelUri}</uri>\n`;
                 xml += `  <name>${name}</name>\n`;
-                xml += `  <pose>${x.toFixed(6)} ${y.toFixed(6)} ${z.toFixed(6)} 0 -0 0</pose>\n`;
+                xml += `  <pose>${x.toFixed(6)} ${y.toFixed(6)} ${z.toFixed(6)} ${roll.toFixed(6)} ${pitch.toFixed(6)} ${yaw.toFixed(6)}</pose>\n`;
                 xml += `</include>\n`;
                 
                 if (counter < repeatX * repeatY * repeatZ) {
@@ -188,7 +197,7 @@ function generateXML() {
                 }
                 
                 // Add visual model in Three.js
-                createModel(x, z, -y, counter, sizeX, sizeY, sizeZ); // Note: swapping y and z for Three.js coordinate system
+                createModel(x, z, -y, counter, sizeX, sizeY, sizeZ, pitch, yaw, roll); // Note: swapping y and z for Three.js coordinate system
                 
                 counter++;
             }
@@ -226,6 +235,7 @@ function copyToClipboard() {
 
 // Event Listeners
 document.getElementById('generateBtn').addEventListener('click', generateXML);
+document.getElementById('regenerateBtn').addEventListener('click', generateXML);
 document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 document.getElementById('zoomIn').addEventListener('click', () => {
     const distance = camera.position.length();
